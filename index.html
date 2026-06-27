@@ -83,20 +83,6 @@
             display: block;
         }
 
-        /* 食品记录页面 - 单屏布局 */
-        .food-page {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            padding: 0;
-        }
-
-        .food-page-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 8px;
-        }
-
         .card {
             background: white;
             border-radius: 12px;
@@ -234,190 +220,24 @@
             color: #ef6c00;
         }
 
-        /* 最近使用 */
-        .recent-foods {
-            margin-bottom: 8px;
-        }
-
-        .recent-foods-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 6px;
-        }
-
-        .recent-foods-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .recent-food-chip {
-            background: #e8f5e9;
-            border: 1px solid #c8e6c9;
-            border-radius: 16px;
-            padding: 4px 10px;
-            font-size: 12px;
-            color: #2e7d32;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .recent-food-chip:active {
-            transform: scale(0.95);
-            background: #c8e6c9;
-        }
-
-        /* 底部固定按钮 */
-        .bottom-action {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 8px 12px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
-            z-index: 100;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .bottom-action .btn {
-            padding: 14px;
-            font-size: 16px;
-        }
-
-        /* 今日餐单紧凑版 */
-        .food-list-compact {
-            max-height: 120px;
-            overflow-y: auto;
-        }
-
-        .food-item-compact {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 13px;
-        }
-
-        .food-item-compact:last-child {
-            border-bottom: none;
-        }
-
-        .food-item-compact .name {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .food-item-compact .detail {
-            font-size: 11px;
-            color: #999;
-        }
-
-        .food-item-compact .cal {
-            font-weight: 600;
-            color: #e65100;
-            font-size: 13px;
-        }
-
-        .btn-delete-small {
-            background: #ffebee;
-            color: #c62828;
-            border: none;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-left: 6px;
-        }
-
-        /* 营养分析迷你版 */
-        .mini-analysis {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .mini-chart {
-            width: 60px;
-            height: 60px;
-            flex-shrink: 0;
-        }
-
-        .mini-stats {
-            flex: 1;
+        .live-result .detail-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4px;
-        }
-
-        .mini-stat {
-            font-size: 11px;
-            color: #666;
-        }
-
-        .mini-stat .num {
-            font-weight: 600;
-            color: #333;
-            font-size: 13px;
-        }
-
-        /* 底部汇总栏 */
-        .bottom-bar {
-            background: white;
-            padding: 8px 12px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
-            flex-shrink: 0;
-        }
-
-        .progress-section {
-            margin-bottom: 6px;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #555;
-            margin-bottom: 3px;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #43a047, #66bb6a);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-
-        .progress-fill.over {
-            background: linear-gradient(90deg, #e53935, #ef5350);
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 6px;
-            text-align: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(230, 81, 0, 0.15);
         }
 
-        .summary-item .num {
-            font-size: 16px;
+        .live-result .detail-item {
+            font-size: 11px;
+            color: #ef6c00;
+        }
+
+        .live-result .detail-item .num {
             font-weight: 700;
-            color: #333;
-        }
-
-        .summary-item .label {
-            font-size: 10px;
-            color: #888;
+            font-size: 14px;
+            color: #e65100;
         }
 
         /* 代谢计算页面 */
@@ -504,23 +324,6 @@
         .bmi-status.overweight { background: #fff3e0; color: #ef6c00; }
         .bmi-status.obese { background: #ffebee; color: #c62828; }
 
-        .target-input {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            margin-top: 8px;
-        }
-
-        .target-input input {
-            flex: 1;
-        }
-
-        .target-input button {
-            width: auto;
-            padding: 8px 14px;
-            font-size: 13px;
-        }
-
         .clear-cache-btn {
             background: #f5f5f5;
             color: #999;
@@ -532,6 +335,17 @@
             margin-top: 8px;
         }
 
+        /* 提示文字样式 */
+        .input-tip {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            background: #f0f7ff;
+            border-radius: 6px;
+            border-left: 3px solid #42a5f5;
+        }
+
         @media (max-width: 480px) {
             .form-row {
                 gap: 6px;
@@ -541,6 +355,7 @@
             }
         }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -632,179 +447,89 @@
                     <div class="bmi-status normal" id="bmi-status">正常</div>
                     <div style="font-size:11px;color:#666;margin-top:4px;" id="bmi-range">正常范围：18.5 - 23.9</div>
                 </div>
-
-                <button class="btn btn-primary" style="margin-top:10px;" onclick="setTargetFromTDEE()">
-                    设为每日热量目标
-                </button>
             </div>
 
             <div class="card">
-                <div class="card-title">
-                    <div class="icon">🎯</div>
-                    每日热量目标
-                </div>
-                <div class="target-input">
-                    <input type="number" class="form-input" id="daily-target" placeholder="" min="500" max="5000">
-                    <span style="color:#666;font-size:12px;">大卡</span>
-                    <button class="btn btn-secondary" onclick="saveTarget()">保存</button>
-                </div>
-                <p style="font-size:11px;color:#999;margin-top:6px;">
-                    当前目标：<strong id="current-target" style="color:#43a047;">2000</strong> 大卡/天
-                </p>
                 <button class="clear-cache-btn" onclick="clearAllCache()">🗑️ 清空所有缓存数据</button>
             </div>
         </div>
 
-        <!-- 食品记录页面 - 单屏布局 -->
-        <div id="page-food" class="page food-page">
-            <div class="food-page-content">
-                <!-- 最近使用 -->
-                <div class="card" id="recent-section" style="display:none;">
-                    <div class="recent-foods-title">🕐 最近使用</div>
-                    <div class="recent-foods-list" id="recent-foods-list"></div>
+        <!-- 食品记录页面 -->
+        <div id="page-food" class="page" style="padding:8px;overflow-y:auto;height:100%;">
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon">🍎</div>
+                    添加食品
                 </div>
 
-                <!-- 添加食品 -->
-                <div class="card">
-                    <div class="card-title">
-                        <div class="icon">🍎</div>
-                        添加食品
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">食品名称</label>
+                        <input type="text" class="form-input" id="food-name" placeholder="">
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">食品名称</label>
-                            <input type="text" class="form-input" id="food-name" placeholder="">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">重量（克）<span class="required">*</span></label>
-                            <input type="number" class="form-input" id="food-weight" placeholder="" min="1" step="0.1" oninput="calculateLiveCalories()">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">能量（千焦）<span class="required">*</span></label>
-                            <input type="number" class="form-input" id="energy-kj" placeholder="" min="0" step="0.1" oninput="calculateLiveCalories()">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">蛋白质（克）<span class="optional">可选</span></label>
-                            <input type="number" class="form-input" id="protein-100" placeholder="" min="0" step="0.1">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">脂肪（克）<span class="optional">可选</span></label>
-                            <input type="number" class="form-input" id="fat-100" placeholder="" min="0" step="0.1">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">碳水（克）<span class="optional">可选</span></label>
-                            <input type="number" class="form-input" id="carbs-100" placeholder="" min="0" step="0.1">
-                        </div>
-                    </div>
-
-                    <div class="live-result" id="live-result">
-                        <span class="value" id="live-kcal">0</span>
-                        <span class="unit">大卡</span>
-                        <div class="label" id="live-detail">预计摄入热量</div>
+                    <div class="form-group">
+                        <label class="form-label">重量（克）<span class="required">*</span></label>
+                        <input type="number" class="form-input" id="food-weight" placeholder="" min="1" step="0.1" oninput="calculateLiveCalories()">
                     </div>
                 </div>
 
-                <!-- 今日餐单 -->
-                <div class="card">
-                    <div class="card-title">
-                        <div class="icon">📝</div>
-                        今日餐单
-                        <span style="margin-left:auto;font-size:12px;color:#999;" id="food-count">0 项</span>
+                <div class="input-tip">
+                    💡 输入食品外包装上的「每100克」营养成分
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">能量（千焦）<span class="required">*</span></label>
+                        <input type="number" class="form-input" id="energy-kj" placeholder="" min="0" step="0.1" oninput="calculateLiveCalories()">
                     </div>
-                    <div class="food-list-compact" id="food-list">
-                        <div style="text-align:center;color:#999;font-size:12px;padding:10px;">
-                            还没有添加食品
-                        </div>
+                    <div class="form-group">
+                        <label class="form-label">蛋白质（克）<span class="optional">可选</span></label>
+                        <input type="number" class="form-input" id="protein-100" placeholder="" min="0" step="0.1" oninput="calculateLiveCalories()">
                     </div>
                 </div>
 
-                <!-- 营养分析 -->
-                <div class="card" id="analysis-card" style="display:none;">
-                    <div class="card-title">
-                        <div class="icon">📈</div>
-                        营养分析
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">脂肪（克）<span class="optional">可选</span></label>
+                        <input type="number" class="form-input" id="fat-100" placeholder="" min="0" step="0.1" oninput="calculateLiveCalories()">
                     </div>
-                    <div class="mini-analysis">
-                        <canvas class="mini-chart" id="pie-chart" width="60" height="60"></canvas>
-                        <div class="mini-stats">
-                            <div class="mini-stat">
-                                <span class="num" id="total-protein">0g</span> 蛋白质
-                            </div>
-                            <div class="mini-stat">
-                                <span class="num" id="total-fat">0g</span> 脂肪
-                            </div>
-                            <div class="mini-stat">
-                                <span class="num" id="total-carbs">0g</span> 碳水
-                            </div>
-                            <div class="mini-stat">
-                                <span class="num" id="total-sodium">0mg</span> 钠
-                            </div>
+                    <div class="form-group">
+                        <label class="form-label">碳水（克）<span class="optional">可选</span></label>
+                        <input type="number" class="form-input" id="carbs-100" placeholder="" min="0" step="0.1" oninput="calculateLiveCalories()">
+                    </div>
+                </div>
+
+                <div class="live-result" id="live-result">
+                    <span class="value" id="live-kcal">0</span>
+                    <span class="unit">大卡</span>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="num" id="live-protein">0</div>
+                            <div>蛋白质(g)</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="num" id="live-fat">0</div>
+                            <div>脂肪(g)</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="num" id="live-carbs">0</div>
+                            <div>碳水(g)</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="num" id="live-energy">0</div>
+                            <div>能量(kJ)</div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- 底部固定按钮 -->
-            <div class="bottom-action">
-                <button class="btn btn-primary" onclick="addFood()">添加到餐单</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 底部汇总栏 -->
-    <div class="bottom-bar">
-        <div class="progress-section">
-            <div class="progress-header">
-                <span>热量摄入</span>
-                <span id="progress-text">0 / 2000 大卡</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-            </div>
-        </div>
-        <div class="summary-grid">
-            <div class="summary-item">
-                <div class="num" id="summary-calories">0</div>
-                <div class="label">已摄入（大卡）</div>
-            </div>
-            <div class="summary-item">
-                <div class="num" id="summary-remaining">2000</div>
-                <div class="label">剩余（大卡）</div>
-            </div>
-            <div class="summary-item">
-                <div class="num" id="summary-percent">0%</div>
-                <div class="label">完成度</div>
             </div>
         </div>
     </div>
 
     <script>
-        let dailyTarget = 2000;
-        let foodList = [];
-        let recentFoods = [];
-
         function loadData() {
             const saved = localStorage.getItem('nutrition-calculator');
             if (saved) {
                 const data = JSON.parse(saved);
-                const today = new Date().toDateString();
-                if (data.date === today) {
-                    dailyTarget = data.dailyTarget || 2000;
-                    foodList = data.foodList || [];
-                    recentFoods = data.recentFoods || [];
-                } else {
-                    dailyTarget = data.dailyTarget || 2000;
-                    foodList = [];
-                    recentFoods = data.recentFoods || [];
-                }
-
                 if (data.personalInfo) {
                     document.getElementById('gender').value = data.personalInfo.gender || 'male';
                     document.getElementById('age').value = data.personalInfo.age || '';
@@ -813,20 +538,10 @@
                     document.getElementById('activity').value = data.personalInfo.activity || '1.55';
                 }
             }
-
-            document.getElementById('daily-target').value = dailyTarget;
-            document.getElementById('current-target').textContent = dailyTarget;
-            updateFoodList();
-            updateSummary();
-            renderRecentFoods();
         }
 
         function saveData() {
             const data = {
-                date: new Date().toDateString(),
-                dailyTarget: dailyTarget,
-                foodList: foodList,
-                recentFoods: recentFoods,
                 personalInfo: {
                     gender: document.getElementById('gender').value,
                     age: document.getElementById('age').value,
@@ -836,58 +551,6 @@
                 }
             };
             localStorage.setItem('nutrition-calculator', JSON.stringify(data));
-        }
-
-        function renderRecentFoods() {
-            const section = document.getElementById('recent-section');
-            const list = document.getElementById('recent-foods-list');
-
-            if (recentFoods.length === 0) {
-                section.style.display = 'none';
-                return;
-            }
-
-            section.style.display = 'block';
-            list.innerHTML = recentFoods.map(food => `
-                <div class="recent-food-chip" onclick="selectRecentFood(${food.id})">
-                    <span>${food.name}</span>
-                </div>
-            `).join('');
-        }
-
-        function selectRecentFood(id) {
-            const food = recentFoods.find(f => f.id === id);
-            if (!food) return;
-
-            document.getElementById('food-name').value = food.name;
-            document.getElementById('energy-kj').value = food.energy;
-            document.getElementById('protein-100').value = food.protein || '';
-            document.getElementById('fat-100').value = food.fat || '';
-            document.getElementById('carbs-100').value = food.carbs || '';
-            document.getElementById('sodium-100').value = food.sodium || '';
-            document.getElementById('food-weight').value = '';
-
-            document.getElementById('food-weight').focus();
-            calculateLiveCalories();
-        }
-
-        function addToRecent(food) {
-            const ratio = 100 / food.weight;
-            const foodData = {
-                id: Date.now(),
-                name: food.name,
-                energy: Math.round(food.energyKJ * ratio),
-                protein: food.protein > 0 ? parseFloat((food.protein * ratio).toFixed(1)) : '',
-                fat: food.fat > 0 ? parseFloat((food.fat * ratio).toFixed(1)) : '',
-                carbs: food.carbs > 0 ? parseFloat((food.carbs * ratio).toFixed(1)) : '',
-                sodium: food.sodium > 0 ? Math.round(food.sodium * ratio) : ''
-            };
-
-            recentFoods = recentFoods.filter(f => f.name !== food.name);
-            recentFoods.unshift(foodData);
-            if (recentFoods.length > 10) recentFoods = recentFoods.slice(0, 10);
-
-            renderRecentFoods();
         }
 
         function switchTab(tab) {
@@ -956,50 +619,17 @@
             saveData();
         }
 
-        function setTargetFromTDEE() {
-            const tdee = parseFloat(document.getElementById('tdee-value').textContent);
-            if (tdee) {
-                dailyTarget = Math.round(tdee);
-                document.getElementById('daily-target').value = dailyTarget;
-                document.getElementById('current-target').textContent = dailyTarget;
-                updateSummary();
-                saveData();
-                alert('已设为每日目标：' + dailyTarget + ' 大卡');
-            }
-        }
-
-        function saveTarget() {
-            const target = parseFloat(document.getElementById('daily-target').value);
-            if (target && target >= 500 && target <= 5000) {
-                dailyTarget = target;
-                document.getElementById('current-target').textContent = dailyTarget;
-                updateSummary();
-                saveData();
-                alert('目标已保存');
-            } else {
-                alert('请输入有效的热量目标（500-5000 大卡）');
-            }
-        }
-
         function clearAllCache() {
             if (confirm('确定要清空所有缓存数据吗？')) {
                 localStorage.removeItem('nutrition-calculator');
-                dailyTarget = 2000;
-                foodList = [];
-                recentFoods = [];
 
                 document.getElementById('gender').value = 'male';
                 document.getElementById('age').value = '';
                 document.getElementById('height').value = '';
                 document.getElementById('weight').value = '';
                 document.getElementById('activity').value = '1.55';
-                document.getElementById('daily-target').value = '';
-                document.getElementById('current-target').textContent = '2000';
                 document.getElementById('bmr-result').style.display = 'none';
 
-                updateFoodList();
-                updateSummary();
-                renderRecentFoods();
                 alert('已清空所有缓存数据');
             }
         }
@@ -1007,181 +637,27 @@
         function calculateLiveCalories() {
             const energyKJ = parseFloat(document.getElementById('energy-kj').value) || 0;
             const weight = parseFloat(document.getElementById('food-weight').value) || 0;
+            const protein = parseFloat(document.getElementById('protein-100').value) || 0;
+            const fat = parseFloat(document.getElementById('fat-100').value) || 0;
+            const carbs = parseFloat(document.getElementById('carbs-100').value) || 0;
 
             if (energyKJ > 0 && weight > 0) {
                 const ratio = weight / 100;
                 const kcal = (energyKJ * ratio) / 4.184;
+                const totalProtein = protein * ratio;
+                const totalFat = fat * ratio;
+                const totalCarbs = carbs * ratio;
+                const totalEnergy = energyKJ * ratio;
 
                 document.getElementById('live-kcal').textContent = Math.round(kcal);
-                document.getElementById('live-detail').textContent = 
-                    '每100g含 ' + energyKJ + ' 千焦，食用 ' + weight + ' 克';
+                document.getElementById('live-protein').textContent = totalProtein > 0 ? totalProtein.toFixed(1) : '0';
+                document.getElementById('live-fat').textContent = totalFat > 0 ? totalFat.toFixed(1) : '0';
+                document.getElementById('live-carbs').textContent = totalCarbs > 0 ? totalCarbs.toFixed(1) : '0';
+                document.getElementById('live-energy').textContent = Math.round(totalEnergy);
                 document.getElementById('live-result').classList.add('show');
             } else {
                 document.getElementById('live-result').classList.remove('show');
             }
-        }
-
-        function addFood() {
-            const name = document.getElementById('food-name').value.trim();
-            const energyKJ = parseFloat(document.getElementById('energy-kj').value) || 0;
-            const protein = parseFloat(document.getElementById('protein-100').value) || 0;
-            const fat = parseFloat(document.getElementById('fat-100').value) || 0;
-            const carbs = parseFloat(document.getElementById('carbs-100').value) || 0;
-            const sodium = parseFloat(document.getElementById('sodium-100').value) || 0;
-            const weight = parseFloat(document.getElementById('food-weight').value);
-
-            if (!name) {
-                alert('请输入食品名称');
-                return;
-            }
-            if (!energyKJ || energyKJ <= 0) {
-                alert('请输入能量（千焦）');
-                return;
-            }
-            if (!weight || weight <= 0) {
-                alert('请输入有效的食用重量');
-                return;
-            }
-
-            const ratio = weight / 100;
-            const food = {
-                id: Date.now(),
-                name: name,
-                weight: weight,
-                energyKJ: energyKJ * ratio,
-                energyKcal: (energyKJ * ratio) / 4.184,
-                protein: protein * ratio,
-                fat: fat * ratio,
-                carbs: carbs * ratio,
-                sodium: sodium * ratio
-            };
-
-            foodList.push(food);
-            addToRecent(food);
-            updateFoodList();
-            updateSummary();
-            saveData();
-
-            document.getElementById('food-name').value = '';
-            document.getElementById('energy-kj').value = '';
-            document.getElementById('protein-100').value = '';
-            document.getElementById('fat-100').value = '';
-            document.getElementById('carbs-100').value = '';
-            document.getElementById('sodium-100').value = '';
-            document.getElementById('food-weight').value = '';
-            document.getElementById('live-result').classList.remove('show');
-        }
-
-        function deleteFood(id) {
-            foodList = foodList.filter(f => f.id !== id);
-            updateFoodList();
-            updateSummary();
-            saveData();
-        }
-
-        function updateFoodList() {
-            const container = document.getElementById('food-list');
-            const countEl = document.getElementById('food-count');
-            const analysisCard = document.getElementById('analysis-card');
-
-            countEl.textContent = foodList.length + ' 项';
-
-            if (foodList.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:#999;font-size:12px;padding:10px;">还没有添加食品</div>';
-                analysisCard.style.display = 'none';
-                return;
-            }
-
-            analysisCard.style.display = 'block';
-
-            container.innerHTML = foodList.map(food => `
-                <div class="food-item-compact">
-                    <div>
-                        <div class="name">${food.name} <span class="detail">${food.weight.toFixed(0)}g</span></div>
-                    </div>
-                    <div style="display:flex;align-items:center;">
-                        <span class="cal">${Math.round(food.energyKcal)} 大卡</span>
-                        <button class="btn-delete-small" onclick="deleteFood(${food.id})">删除</button>
-                    </div>
-                </div>
-            `).join('');
-
-            updateAnalysis();
-        }
-
-        function updateSummary() {
-            const totalKcal = foodList.reduce((sum, f) => sum + f.energyKcal, 0);
-            const remaining = dailyTarget - totalKcal;
-            const percent = Math.min((totalKcal / dailyTarget) * 100, 100);
-
-            document.getElementById('summary-calories').textContent = Math.round(totalKcal);
-            document.getElementById('summary-remaining').textContent = Math.round(remaining);
-            document.getElementById('summary-percent').textContent = Math.round(percent) + '%';
-            document.getElementById('progress-text').textContent = Math.round(totalKcal) + ' / ' + dailyTarget + ' 大卡';
-
-            const fill = document.getElementById('progress-fill');
-            fill.style.width = Math.min(percent, 100) + '%';
-            fill.classList.toggle('over', totalKcal > dailyTarget);
-        }
-
-        function updateAnalysis() {
-            const totalProtein = foodList.reduce((sum, f) => sum + f.protein, 0);
-            const totalFat = foodList.reduce((sum, f) => sum + f.fat, 0);
-            const totalCarbs = foodList.reduce((sum, f) => sum + f.carbs, 0);
-            const totalSodium = foodList.reduce((sum, f) => sum + f.sodium, 0);
-
-            document.getElementById('total-protein').textContent = totalProtein.toFixed(1) + 'g';
-            document.getElementById('total-fat').textContent = totalFat.toFixed(1) + 'g';
-            document.getElementById('total-carbs').textContent = totalCarbs.toFixed(1) + 'g';
-            document.getElementById('total-sodium').textContent = Math.round(totalSodium) + 'mg';
-
-            drawMiniPieChart(totalProtein, totalFat, totalCarbs);
-        }
-
-        function drawMiniPieChart(protein, fat, carbs) {
-            const canvas = document.getElementById('pie-chart');
-            const ctx = canvas.getContext('2d');
-            const size = 60;
-            const center = size / 2;
-            const radius = 25;
-
-            const proteinKcal = protein * 4;
-            const fatKcal = fat * 9;
-            const carbsKcal = carbs * 4;
-            const total = proteinKcal + fatKcal + carbsKcal;
-
-            ctx.clearRect(0, 0, size, size);
-
-            if (total === 0) {
-                ctx.fillStyle = '#e0e0e0';
-                ctx.beginPath();
-                ctx.arc(center, center, radius, 0, Math.PI * 2);
-                ctx.fill();
-                return;
-            }
-
-            const data = [
-                { value: proteinKcal, color: '#42a5f5' },
-                { value: fatKcal, color: '#ffa726' },
-                { value: carbsKcal, color: '#66bb6a' }
-            ];
-
-            let startAngle = -Math.PI / 2;
-            data.forEach(item => {
-                const angle = (item.value / total) * Math.PI * 2;
-                ctx.fillStyle = item.color;
-                ctx.beginPath();
-                ctx.moveTo(center, center);
-                ctx.arc(center, center, radius, startAngle, startAngle + angle);
-                ctx.closePath();
-                ctx.fill();
-                startAngle += angle;
-            });
-
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(center, center, 15, 0, Math.PI * 2);
-            ctx.fill();
         }
 
         window.onload = loadData;

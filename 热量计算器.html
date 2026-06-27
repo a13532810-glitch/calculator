@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>营养与代谢计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* 顶部标题 */
+        .header {
+            background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%);
+            color: white;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* Tab 切换 */
+        .tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: #43a047;
+            border-bottom-color: #43a047;
+        }
+
+        /* 内容区域 */
+        .content {
+            padding: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title .icon {
+            width: 28px;
+            height: 28px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+            background: #fafafa;
+            -webkit-appearance: none;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #43a047;
+            background: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            -webkit-appearance: none;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 160, 71, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .btn-danger {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* 结果展示 */
+        .result-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+
+        .result-unit {
+            font-size: 14px;
+            color: #558b2f;
+            margin-left: 4px;
+        }
+
+        .result-label {
+            font-size: 13px;
+            color: #689f38;
+            margin-top: 4px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .result-item-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+
+        .result-item-label {
+            font-size: 12px;
+            color: #689f38;
+            margin-top: 2px;
+        }
+
+        /* 食品列表 */
+        .food-list {
+            margin-top: 16px;
+        }
+
+        .food-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .food-info h4 {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .food-info p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .food-calories {
+            text-align: right;
+        }
+
+        .food-calories .num {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e65100;
+        }
+
+        .food-calories .unit {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: #c62828;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* 底部汇总栏 */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            padding: 12px 16px;
+            z-index: 100;
+            max-width: 480px;
+            margin: 0 auto;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        .progress-section {
+            margin-bottom: 10px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #43a047, #66bb6a);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-fill.over {
+            background: linear-gradient(90deg, #e53935, #ef5350);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .summary-item .num {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .summary-item .label {
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* 饼图容器 */
+        .chart-container {
+            width: 200px;
+            height: 200px;
+            margin: 16px auto;
+            position: relative;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state .emoji {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        /* 设置目标 */
+        .target-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .target-input input {
+            flex: 1;
+        }
+
+        .target-input button {
+            width: auto;
+            padding: 14px 20px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            .content {
+                padding: 12px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .result-value {
+                font-size: 28px;
+            }
+        }
+
+        /* 隐藏滚动条但保持功能 */
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部标题 -->
+    <div class="header">
+        <h1>🥗 营养与代谢计算器</h1>
+        <p>计算代谢 · 记录饮食 · 管理健康</p>
+    </div>
+
+    <!-- Tab 切换 -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('metabolism')">代谢计算</div>
+        <div class="tab" onclick="switchTab('food')">食品记录</div>
+    </div>
+
+    <div class="content">
+        <!-- ========== 代谢计算页面 ========== -->
+        <div id="page-metabolism" class="page active">
+            <!-- 个人信息输入 -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon">👤</div>
+                    个人信息
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">性别</label>
+                        <select class="form-select" id="gender">
+                            <option value="male">男</option>
+                            <option value="female">女</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">年龄（岁）</label>
+                        <input type="number" class="form-input" id="age" placeholder="25" min="1" max="120">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">身高（cm）</label>
+                        <input type="number" class="form-input" id="height" placeholder="170" min="50" max="250">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">体重（kg）</label>
+                        <input type="number" class="form-input" id="weight" placeholder="65" min="20" max="300" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">活动水平</label>
+                    <select class="form-select" id="activity">
+                        <option value="1.2">久坐（几乎不运动）</option>
+                        <option value="1.375">轻度活动（每周1-3天轻度运动）</option>
+                        <option value="1.55" selected>中度活动（每周3-5天中度运动）</option>
+                        <option value="1.725">高度活动（每周6-7天高强度运动）</option>
+                        <option value="1.9">极高活动（体力劳动/每天高强度训练）</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" onclick="calculateBMR()">计算代谢率</button>
+            </div>
+
+            <!-- 计算结果 -->
+            <div class="card" id="bmr-result" style="display:none;">
+                <div class="card-title">
+                    <div class="icon">📊</div>
+                    计算结果
+                </div>
+
+                <div class="result-box">
+                    <div>
+                        <span class="result-value" id="bmr-value">0</span>
+                        <span class="result-unit">大卡/天</span>
+                    </div>
+                    <div class="result-label">基础代谢率 BMR</div>
+                </div>
+
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-item-value" id="tdee-value">0</div>
+                        <div class="result-item-label">每日总消耗 TDEE（大卡）</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-item-value" id="tdee-kj">0</div>
+                        <div class="result-item-label">每日总消耗（千焦）</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top:16px;" onclick="setTargetFromTDEE()">
+                    设为每日热量目标
+                </button>
+            </div>
+
+            <!-- 每日目标设置 -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon">🎯</div>
+                    每日热量目标
+                </div>
+                <div class="target-input">
+                    <input type="number" class="form-input" id="daily-target" placeholder="2000" min="500" max="5000">
+                    <span style="color:#666;font-size:14px;">大卡</span>
+                    <button class="btn btn-secondary" onclick="saveTarget()">保存</button>
+                </div>
+                <p style="font-size:12px;color:#999;margin-top:8px;">
+                    当前目标：<strong id="current-target" style="color:#43a047;">2000</strong> 大卡/天
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== 食品记录页面 ========== -->
+        <div id="page-food" class="page">
+            <!-- 食品营养成分输入 -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon">🍎</div>
+                    添加食品
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">食品名称</label>
+                    <input type="text" class="form-input" id="food-name" placeholder="例如：全麦面包">
+                </div>
+
+                <div style="font-size:13px;color:#666;margin-bottom:12px;padding:10px;background:#f5f5f5;border-radius:8px;">
+                    💡 输入食品外包装上的「每100克」营养成分
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">能量（千焦）</label>
+                        <input type="number" class="form-input" id="energy-kj" placeholder="1200" min="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">蛋白质（克）</label>
+                        <input type="number" class="form-input" id="protein-100" placeholder="8" min="0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">脂肪（克）</label>
+                        <input type="number" class="form-input" id="fat-100" placeholder="5" min="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">碳水化合物（克）</label>
+                        <input type="number" class="form-input" id="carbs-100" placeholder="45" min="0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">钠（毫克，可选）</label>
+                        <input type="number" class="form-input" id="sodium-100" placeholder="0" min="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">膳食纤维（克，可选）</label>
+                        <input type="number" class="form-input" id="fiber-100" placeholder="0" min="0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">糖（克，可选）</label>
+                    <input type="number" class="form-input" id="sugar-100" placeholder="0" min="0" step="0.1">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">实际食用重量（克）</label>
+                    <input type="number" class="form-input" id="food-weight" placeholder="60" min="1" step="0.1">
+                </div>
+
+                <button class="btn btn-primary" onclick="addFood()">添加到餐单</button>
+            </div>
+
+            <!-- 餐单列表 -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon">📝</div>
+                    今日餐单
+                    <span style="margin-left:auto;font-size:13px;color:#999;" id="food-count">0 项</span>
+                </div>
+
+                <div id="food-list" class="food-list">
+                    <div class="empty-state">
+                        <div class="emoji">🍽️</div>
+                        <p>还没有添加食品</p>
+                        <p style="font-size:12px;margin-top:4px;">在上面输入营养成分，开始记录吧</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-danger" id="clear-btn" style="margin-top:12px;display:none;" onclick="clearAllFood()">
+                    清空今日记录
+                </button>
+            </div>
+
+            <!-- 营养分析 -->
+            <div class="card" id="analysis-card" style="display:none;">
+                <div class="card-title">
+                    <div class="icon">📈</div>
+                    营养分析
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="pie-chart" width="200" height="200"></canvas>
+                </div>
+
+                <div class="chart-legend" id="chart-legend"></div>
+
+                <div class="result-grid" style="margin-top:16px;">
+                    <div class="result-item">
+                        <div class="result-item-value" id="total-protein">0g</div>
+                        <div class="result-item-label">蛋白质</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-item-value" id="total-fat">0g</div>
+                        <div class="result-item-label">脂肪</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-item-value" id="total-carbs">0g</div>
+                        <div class="result-item-label">碳水</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-item-value" id="total-sodium">0mg</div>
+                        <div class="result-item-label">钠</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部汇总栏 -->
+    <div class="bottom-bar">
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>热量摄入</span>
+                <span id="progress-text">0 / 2000 大卡</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+            </div>
+        </div>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <div class="num" id="summary-calories">0</div>
+                <div class="label">已摄入（大卡）</div>
+            </div>
+            <div class="summary-item">
+                <div class="num" id="summary-remaining">2000</div>
+                <div class="label">剩余（大卡）</div>
+            </div>
+            <div class="summary-item">
+                <div class="num" id="summary-percent">0%</div>
+                <div class="label">完成度</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 数据存储 ====================
+        let dailyTarget = 2000;
+        let foodList = [];
+
+        // 从 localStorage 加载数据
+        function loadData() {
+            const saved = localStorage.getItem('nutrition-calculator');
+            if (saved) {
+                const data = JSON.parse(saved);
+                // 检查是否是今天的数据
+                const today = new Date().toDateString();
+                if (data.date === today) {
+                    dailyTarget = data.dailyTarget || 2000;
+                    foodList = data.foodList || [];
+                } else {
+                    // 新的一天，重置餐单但保留目标
+                    dailyTarget = data.dailyTarget || 2000;
+                    foodList = [];
+                }
+
+                // 恢复个人信息
+                if (data.personalInfo) {
+                    document.getElementById('gender').value = data.personalInfo.gender || 'male';
+                    document.getElementById('age').value = data.personalInfo.age || '';
+                    document.getElementById('height').value = data.personalInfo.height || '';
+                    document.getElementById('weight').value = data.personalInfo.weight || '';
+                    document.getElementById('activity').value = data.personalInfo.activity || '1.55';
+                }
+            }
+
+            document.getElementById('daily-target').value = dailyTarget;
+            document.getElementById('current-target').textContent = dailyTarget;
+            updateFoodList();
+            updateSummary();
+        }
+
+        // 保存到 localStorage
+        function saveData() {
+            const data = {
+                date: new Date().toDateString(),
+                dailyTarget: dailyTarget,
+                foodList: foodList,
+                personalInfo: {
+                    gender: document.getElementById('gender').value,
+                    age: document.getElementById('age').value,
+                    height: document.getElementById('height').value,
+                    weight: document.getElementById('weight').value,
+                    activity: document.getElementById('activity').value
+                }
+            };
+            localStorage.setItem('nutrition-calculator', JSON.stringify(data));
+        }
+
+        // ==================== Tab 切换 ====================
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById('page-' + tab).classList.add('active');
+        }
+
+        // ==================== BMR / TDEE 计算 ====================
+        function calculateBMR() {
+            const gender = document.getElementById('gender').value;
+            const age = parseFloat(document.getElementById('age').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+
+            if (!age || !height || !weight) {
+                alert('请填写完整的个人信息');
+                return;
+            }
+
+            // Mifflin-St Jeor 公式
+            let bmr;
+            if (gender === 'male') {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+
+            const tdee = bmr * activity;
+
+            document.getElementById('bmr-value').textContent = Math.round(bmr);
+            document.getElementById('tdee-value').textContent = Math.round(tdee);
+            document.getElementById('tdee-kj').textContent = Math.round(tdee * 4.184);
+            document.getElementById('bmr-result').style.display = 'block';
+
+            saveData();
+        }
+
+        function setTargetFromTDEE() {
+            const tdee = parseFloat(document.getElementById('tdee-value').textContent);
+            if (tdee) {
+                dailyTarget = Math.round(tdee);
+                document.getElementById('daily-target').value = dailyTarget;
+                document.getElementById('current-target').textContent = dailyTarget;
+                updateSummary();
+                saveData();
+                alert('已设为每日目标：' + dailyTarget + ' 大卡');
+            }
+        }
+
+        function saveTarget() {
+            const target = parseFloat(document.getElementById('daily-target').value);
+            if (target && target >= 500 && target <= 5000) {
+                dailyTarget = target;
+                document.getElementById('current-target').textContent = dailyTarget;
+                updateSummary();
+                saveData();
+                alert('目标已保存');
+            } else {
+                alert('请输入有效的热量目标（500-5000 大卡）');
+            }
+        }
+
+        // ==================== 食品计算 ====================
+        function addFood() {
+            const name = document.getElementById('food-name').value.trim();
+            const energyKJ = parseFloat(document.getElementById('energy-kj').value) || 0;
+            const protein = parseFloat(document.getElementById('protein-100').value) || 0;
+            const fat = parseFloat(document.getElementById('fat-100').value) || 0;
+            const carbs = parseFloat(document.getElementById('carbs-100').value) || 0;
+            const sodium = parseFloat(document.getElementById('sodium-100').value) || 0;
+            const fiber = parseFloat(document.getElementById('fiber-100').value) || 0;
+            const sugar = parseFloat(document.getElementById('sugar-100').value) || 0;
+            const weight = parseFloat(document.getElementById('food-weight').value);
+
+            if (!name) {
+                alert('请输入食品名称');
+                return;
+            }
+            if (!weight || weight <= 0) {
+                alert('请输入有效的食用重量');
+                return;
+            }
+            if (energyKJ <= 0 && protein <= 0 && fat <= 0 && carbs <= 0) {
+                alert('请至少输入一项营养成分');
+                return;
+            }
+
+            // 计算实际含量
+            const ratio = weight / 100;
+            const food = {
+                id: Date.now(),
+                name: name,
+                weight: weight,
+                energyKJ: energyKJ * ratio,
+                energyKcal: (energyKJ * ratio) / 4.184,
+                protein: protein * ratio,
+                fat: fat * ratio,
+                carbs: carbs * ratio,
+                sodium: sodium * ratio,
+                fiber: fiber * ratio,
+                sugar: sugar * ratio
+            };
+
+            foodList.push(food);
+            updateFoodList();
+            updateSummary();
+            saveData();
+
+            // 清空输入
+            document.getElementById('food-name').value = '';
+            document.getElementById('energy-kj').value = '';
+            document.getElementById('protein-100').value = '';
+            document.getElementById('fat-100').value = '';
+            document.getElementById('carbs-100').value = '';
+            document.getElementById('sodium-100').value = '';
+            document.getElementById('fiber-100').value = '';
+            document.getElementById('sugar-100').value = '';
+            document.getElementById('food-weight').value = '';
+        }
+
+        function deleteFood(id) {
+            foodList = foodList.filter(f => f.id !== id);
+            updateFoodList();
+            updateSummary();
+            saveData();
+        }
+
+        function clearAllFood() {
+            if (confirm('确定要清空今日所有记录吗？')) {
+                foodList = [];
+                updateFoodList();
+                updateSummary();
+                saveData();
+            }
+        }
+
+        // ==================== 更新界面 ====================
+        function updateFoodList() {
+            const container = document.getElementById('food-list');
+            const countEl = document.getElementById('food-count');
+            const clearBtn = document.getElementById('clear-btn');
+
+            countEl.textContent = foodList.length + ' 项';
+
+            if (foodList.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="emoji">🍽️</div>
+                        <p>还没有添加食品</p>
+                        <p style="font-size:12px;margin-top:4px;">在上面输入营养成分，开始记录吧</p>
+                    </div>
+                `;
+                clearBtn.style.display = 'none';
+                document.getElementById('analysis-card').style.display = 'none';
+                return;
+            }
+
+            clearBtn.style.display = 'block';
+            document.getElementById('analysis-card').style.display = 'block';
+
+            container.innerHTML = foodList.map(food => `
+                <div class="food-item">
+                    <div class="food-info">
+                        <h4>${food.name}</h4>
+                        <p>${food.weight.toFixed(0)}g · 蛋白质${food.protein.toFixed(1)}g · 脂肪${food.fat.toFixed(1)}g · 碳水${food.carbs.toFixed(1)}g</p>
+                    </div>
+                    <div style="display:flex;align-items:center;">
+                        <div class="food-calories">
+                            <div class="num">${Math.round(food.energyKcal)}</div>
+                            <div class="unit">大卡</div>
+                        </div>
+                        <button class="btn-delete" onclick="deleteFood(${food.id})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateAnalysis();
+        }
+
+        function updateSummary() {
+            const totalKcal = foodList.reduce((sum, f) => sum + f.energyKcal, 0);
+            const remaining = dailyTarget - totalKcal;
+            const percent = Math.min((totalKcal / dailyTarget) * 100, 100);
+
+            document.getElementById('summary-calories').textContent = Math.round(totalKcal);
+            document.getElementById('summary-remaining').textContent = Math.round(remaining);
+            document.getElementById('summary-percent').textContent = Math.round(percent) + '%';
+            document.getElementById('progress-text').textContent = Math.round(totalKcal) + ' / ' + dailyTarget + ' 大卡';
+
+            const fill = document.getElementById('progress-fill');
+            fill.style.width = Math.min(percent, 100) + '%';
+            fill.classList.toggle('over', totalKcal > dailyTarget);
+        }
+
+        function updateAnalysis() {
+            const totalProtein = foodList.reduce((sum, f) => sum + f.protein, 0);
+            const totalFat = foodList.reduce((sum, f) => sum + f.fat, 0);
+            const totalCarbs = foodList.reduce((sum, f) => sum + f.carbs, 0);
+            const totalSodium = foodList.reduce((sum, f) => sum + f.sodium, 0);
+
+            document.getElementById('total-protein').textContent = totalProtein.toFixed(1) + 'g';
+            document.getElementById('total-fat').textContent = totalFat.toFixed(1) + 'g';
+            document.getElementById('total-carbs').textContent = totalCarbs.toFixed(1) + 'g';
+            document.getElementById('total-sodium').textContent = Math.round(totalSodium) + 'mg';
+
+            // 绘制饼图
+            drawPieChart(totalProtein, totalFat, totalCarbs);
+        }
+
+        // ==================== Canvas 饼图 ====================
+        function drawPieChart(protein, fat, carbs) {
+            const canvas = document.getElementById('pie-chart');
+            const ctx = canvas.getContext('2d');
+            const size = 200;
+            const center = size / 2;
+            const radius = 80;
+
+            // 计算热量
+            const proteinKcal = protein * 4;
+            const fatKcal = fat * 9;
+            const carbsKcal = carbs * 4;
+            const total = proteinKcal + fatKcal + carbsKcal;
+
+            if (total === 0) {
+                ctx.clearRect(0, 0, size, size);
+                ctx.fillStyle = '#e0e0e0';
+                ctx.beginPath();
+                ctx.arc(center, center, radius, 0, Math.PI * 2);
+                ctx.fill();
+                document.getElementById('chart-legend').innerHTML = '';
+                return;
+            }
+
+            const data = [
+                { label: '蛋白质', value: proteinKcal, color: '#42a5f5', grams: protein },
+                { label: '脂肪', value: fatKcal, color: '#ffa726', grams: fat },
+                { label: '碳水', value: carbsKcal, color: '#66bb6a', grams: carbs }
+            ];
+
+            ctx.clearRect(0, 0, size, size);
+
+            let startAngle = -Math.PI / 2;
+            data.forEach(item => {
+                const angle = (item.value / total) * Math.PI * 2;
+
+                ctx.fillStyle = item.color;
+                ctx.beginPath();
+                ctx.moveTo(center, center);
+                ctx.arc(center, center, radius, startAngle, startAngle + angle);
+                ctx.closePath();
+                ctx.fill();
+
+                startAngle += angle;
+            });
+
+            // 中心白色圆
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(center, center, 50, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 中心文字
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 18px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(Math.round(total) + ' 大卡', center, center - 5);
+            ctx.font = '12px sans-serif';
+            ctx.fillStyle = '#888';
+            ctx.fillText('三大营养素', center, center + 15);
+
+            // 图例
+            document.getElementById('chart-legend').innerHTML = data.map(item => {
+                const percent = total > 0 ? ((item.value / total) * 100).toFixed(1) : 0;
+                return `
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:${item.color}"></div>
+                        <span>${item.label} ${percent}% (${item.grams.toFixed(1)}g)</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==================== 初始化 ====================
+        window.onload = loadData;
+    </script>
+</body>
+</html>
